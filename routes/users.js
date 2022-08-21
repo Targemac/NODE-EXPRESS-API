@@ -1,36 +1,31 @@
-import  express  from 'express';
+import express, { request } from "express";
 
-// initializing our nrouter 
+import {
+  createUser,
+  getUsers,
+  getUser,
+  deleteUser,
+  updateUser,
+} from "../controllers/users.js";
+
+// initializing our router
 const router = express.Router();
 
-const users = [
-    {
-        firstName: "John",
-        lastName: "Doe",
-        age: 25
-    },
-    {
-        firstName: "Jane",
-        lastName: "Doe",
-        age: 24
-    }
-]
 
-// all routes in here are starting with /users 
-router.get('/', (req, res)=>{
-    res.send(users); 
-} );
+// all routes in here are starting with /users
+router.get("/", getUsers);
 
-// sending data from server to front-end 
-router.post('/', (req, res)=>{
+// sending data from front-end to server
+router.post("/", createUser);
 
-    // FETCHING ALL USERS FROM SERVER 
-    const user = (req.body);
+// the ':' sign measns we are expecting anything after the users path
+// e.g; to retrive the value of '/users/2', we use the 'req.params {id:2}'
+router.get("/:id", getUser);
 
-    // ADDING TO ARRAY 
-    users.push(user);
+// implementing the delete route to delete users
+router.delete("/:id", deleteUser);
 
-    res.send(`User with the name ${user.firstName} added to the database!`);
-});
+// to do a partial update
+router.patch("/:id", updateUser);
 
 export default router;
